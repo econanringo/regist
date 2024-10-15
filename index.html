@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>演題登録フォーム</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>演題登録フォーム</h1>
+    <form id="presentationForm">
+        <label for="title">演題タイトル:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="author">著者名:</label>
+        <input type="text" id="author" name="author" required>
+
+        <label for="abstract">概要:</label>
+        <textarea id="abstract" name="abstract" required></textarea>
+
+        <button type="submit">登録</button>
+    </form>
+
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById('presentationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('https://script.google.com/macros/s/AKfycbyBxs5idr4JwEBghg5DzTqpNi88ny44_lkNEqzK1DluUOCD1ZzjG81Hew2OzpNMlrtG/exec', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('responseMessage').innerText = data;
+            })
+            .catch(error => {
+                document.getElementById('responseMessage').innerText = 'エラーが発生しました。';
+            });
+        });
+    </script>
+</body>
+</html>
